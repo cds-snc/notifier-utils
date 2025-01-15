@@ -58,6 +58,17 @@ template_env = Environment(
     )
 )
 
+default_placeholders = {
+    "en": {
+        "email_recipient": "((email address))",
+        "sms_recipient": "((phone number))",
+    },
+    "fr": {
+        "email_recipient": "((adresse courriel))",
+        "sms_recipient": "((numéro de téléphone))",
+    },
+}
+
 
 class Template:
     encoding = "utf-8"
@@ -227,7 +238,9 @@ class SMSPreviewTemplate(SMSMessageTemplate):
         downgrade_non_sms_characters=True,
         redact_missing_personalisation=False,
         jinja_path=None,
+        user_language="en",
     ):
+        self.user_language = user_language
         self.show_recipient = show_recipient
         self.show_sender = show_sender
         self.downgrade_non_sms_characters = downgrade_non_sms_characters
@@ -241,7 +254,7 @@ class SMSPreviewTemplate(SMSMessageTemplate):
                 {
                     "sender": self.sender,
                     "show_sender": self.show_sender,
-                    "recipient": Field("((phone number))", self.values, html="escape", translated=True),
+                    "recipient": Field(default_placeholders[self.user_language]["sms_recipient"], self.values, html="escape"),
                     "show_recipient": self.show_recipient,
                     "body": Take(
                         Field(
@@ -468,6 +481,7 @@ class EmailPreviewTemplate(WithSubjectTemplate):
         allow_html=False,
         alt_text_en=None,
         alt_text_fr=None,
+        user_language="en",
     ):
         super().__init__(
             template,
@@ -490,6 +504,7 @@ class EmailPreviewTemplate(WithSubjectTemplate):
         self.allow_html = allow_html
         self.alt_text_en = alt_text_en
         self.alt_text_fr = alt_text_fr
+        self.user_language = user_language
         self.text_direction_rtl = template.get("text_direction_rtl", False)
 
     def __str__(self):
@@ -506,7 +521,7 @@ class EmailPreviewTemplate(WithSubjectTemplate):
                     "from_name": escape_html(self.from_name),
                     "from_address": self.from_address,
                     "reply_to": self.reply_to,
-                    "recipient": Field("((email address))", self.values, translated=True),
+                    "recipient": Field(default_placeholders[self.user_language]["email_recipient"], self.values),
                     "show_recipient": self.show_recipient,
                     "fip_banner_english": self.fip_banner_english,
                     "fip_banner_french": self.fip_banner_french,
