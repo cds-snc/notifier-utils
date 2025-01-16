@@ -1,5 +1,5 @@
 docopt==0.6.2
 Flask==2.3.3
 markupsafe==2.1.5
-setuptools==75.6.0 # required for distutils in Python 3.12
-git+https://github.com/cds-snc/notifier-utils.git@53.0.4#egg=notifications-utils
+setuptools==75.8.0 # required for distutils in Python 3.12
+git+https://github.com/cds-snc/notifier-utils.git@53.1.0#egg=notifications-utils
