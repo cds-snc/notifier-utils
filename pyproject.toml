@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "notifications-utils"
-version = "53.1.0"
+version = "53.1.1"
 description = "Shared python code for Notification - Provides logging utils etc."
 authors = ["Canadian Digital Service"]
 license = "MIT license"

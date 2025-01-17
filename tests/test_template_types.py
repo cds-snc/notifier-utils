@@ -953,7 +953,7 @@ def test_subject_line_gets_replaced():
             [
                 mock.call("content", {}, html="escape", markdown_lists=True, redact_missing_personalisation=False),
                 mock.call("subject", {}, html="escape", redact_missing_personalisation=False),
-                mock.call("((email address))", {}, translated=True),
+                mock.call("((email address))", {}),
             ],
         ),
         (
@@ -967,7 +967,7 @@ def test_subject_line_gets_replaced():
             SMSPreviewTemplate,
             {},
             [
-                mock.call("((phone number))", {}, translated=True, html="escape"),
+                mock.call("((phone number))", {}, html="escape"),
                 mock.call("content", {}, html="escape", redact_missing_personalisation=False),
             ],
         ),
@@ -1037,14 +1037,14 @@ def test_subject_line_gets_replaced():
             [
                 mock.call("content", {}, html="escape", markdown_lists=True, redact_missing_personalisation=True),
                 mock.call("subject", {}, html="escape", redact_missing_personalisation=True),
-                mock.call("((email address))", {}, translated=True),
+                mock.call("((email address))", {}),
             ],
         ),
         (
             SMSPreviewTemplate,
             {"redact_missing_personalisation": True},
             [
-                mock.call("((phone number))", {}, translated=True, html="escape"),
+                mock.call("((phone number))", {}, html="escape"),
                 mock.call("content", {}, html="escape", redact_missing_personalisation=True),
             ],
         ),
@@ -1384,7 +1384,7 @@ def test_email_preview_shows_reply_to_address(extra_args):
 @pytest.mark.parametrize(
     "template_values, expected_content",
     [
-        ({}, "<span class='placeholder-no-brackets'>[email address]</span>"),
+        ({}, "<mark class='placeholder'>((email address))</mark>"),
         ({"email address": "test@example.com"}, "test@example.com"),
     ],
 )
