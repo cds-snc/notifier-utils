@@ -1,5 +1,5 @@
 # Container image that runs your code
-FROM python:3.12
+FROM python:3.13.0
 
 RUN apt update
 RUN apt install -y python3-pip python3 git libmagic-dev
